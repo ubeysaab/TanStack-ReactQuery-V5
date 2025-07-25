@@ -14,7 +14,7 @@ export function NavigationCard({ title, description, href }: NavigationCardProps
     >
       <h2 className="mb-3 text-2xl font-semibold">
         {title}{' '}
-        <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
+        <span className="inline-block transition-transform group-hover:translate-x-3 motion-reduce:transform-none">
           →
         </span>
       </h2>

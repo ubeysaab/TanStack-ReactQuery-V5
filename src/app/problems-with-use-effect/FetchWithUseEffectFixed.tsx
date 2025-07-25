@@ -3,29 +3,47 @@ import { useEffect, useState } from "react";
 import { Post } from "../api/posts/data";
 
 export default function FetchWithUseEffect({ category }: { category: string }) {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<Post[] | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>();
 
   useEffect(() => {
+    // Fix race conditions with ignore flag
+
+    let ignore = false;
     setIsLoading(true);
 
     async function fetchPosts() {
-      setError('')
       try {
         const data = await fetchData<Post[]>(`/posts?category=${category}`);
+        if (!ignore) {
+          setPosts(data);
+          setError('')
 
-        
-        setPosts(data);
+        }
+
       } catch (error) {
-        console.error("Fetch error:", error);
-        setError("Failed to fetch posts");
+        if (!ignore) {
+
+          console.error("Fetch error:", error);
+          setError("Failed to fetch posts");
+          setPosts(undefined)
+        }
       } finally {
-        setIsLoading(false);
+          if (!ignore) {
+          setIsLoading(false);
+        }
       }
+
     }
 
-    fetchPosts();
+    
+
+      fetchPosts();
+  
+    return () => {
+      ignore = true;
+    };
   }, [category]);
 
   return (
@@ -41,11 +59,11 @@ export default function FetchWithUseEffect({ category }: { category: string }) {
           <>
             {error && <div className="mb-4 text-red-500">Error: {error}</div>}
 
-            {posts.length === 0 && !error && (
+            {posts && posts.length === 0 && !error && (
               <div className="mb-4">No posts found for this category.</div>
             )}
 
-            {posts.length > 0 && !error && (
+            {posts && posts.length > 0 && !error && (
               <ul className="space-y-4">
                 {posts.map((post) => (
                   <li key={post.id} className="border p-3 rounded">
