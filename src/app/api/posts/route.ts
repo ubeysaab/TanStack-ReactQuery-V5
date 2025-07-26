@@ -16,10 +16,8 @@ export async function GET(request: Request) {
       { error: "Failed to fetch posts" },
       { status: 500 }
     );
-  }
-
-  // Return the posts for the requested category
-  if (category in posts) {
+  } else if (category in posts) {
+    // Return the posts for the requested category
     return NextResponse.json(posts[category]);
   } else {
     // Return empty array for unknown categories

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import BackArrow from "../components/ui/BackArrow";
+import ReactQueryProvider from "./Provider/ReactQueryProvider";
 
 
 
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
     "Learn how to use TanStack React Query effectively with this tutorial by Coding in Flow",
 };
 
-export   default  function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -30,14 +31,21 @@ export   default  function RootLayout({
 
 
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-      <BackArrow/>
-        {children}
-        <Toaster richColors position="top-right" />
-      </body>
-    </html>
+
+    <ReactQueryProvider>
+
+
+
+      <html lang="en">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <BackArrow />
+          {children}
+          <Toaster richColors position="top-right" />
+        </body>
+      </html>
+
+    </ReactQueryProvider>
   );
 }

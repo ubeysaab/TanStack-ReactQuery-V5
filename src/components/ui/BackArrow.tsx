@@ -12,7 +12,7 @@ function BackArrow() {
 
   return (
     <Link
-      className={clsx("absolute  top-[32px] left-0 sm:left-1/4 ", { "hidden": pathName == "/" })}
+      className={clsx("absolute  top-[24px] left-0  lg:left-1/6   2xl:left-1/4 pr-0.5 ", { "hidden": pathName == "/" })}
       href={'/'}
     >
       <MoveLeft className={"sm:w-8 sm:h-8"} />
